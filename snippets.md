@@ -42,3 +42,49 @@ const numberResult = getValue(42);     // Type: number
 4. **Documentation** - Multiple signatures serve as documentation
 
 > I've found it useful because it prevents you to have to cast the result when you use the method.
+
+## Typescript return type from array
+
+This is util for when you wan to extract some props from an Object using an Array of strings for some of those properties that the object might have.
+
+```typescript
+// pick is pulled from lodash
+
+type Node = {
+  id: string;
+  children: string[];
+  path: string;
+}
+
+type NodeKeys = keyof Node
+
+export function useNodeSelector<K extends NodeKeys>(
+  id: string,
+  nodeProps: K[],
+): Pick<SavedNode, K> | undefined;
+
+export function useNodeSelector<K extends NodeKeys>(
+  id: string,
+  nodeProps?: K[],
+): Node | Pick<Node, K> | undefined {
+  const nodes = useNodes<Record<string, Node>>();
+
+  if (!nodes) {
+    return undefined;
+  }
+
+  const result = nodes[id];
+
+  if (!result) {
+    return undefined;
+  }
+
+  return nodeProps ? (pick(result, nodeProps) as Pick<Node, K>) : result;
+}
+
+// Usage
+
+const props = useNodeSelector('someId', ['path', 'children'])
+// props = { path: '', children: [] }
+
+```
