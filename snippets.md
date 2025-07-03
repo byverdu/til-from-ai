@@ -45,6 +45,8 @@ const numberResult = getValue(42);     // Type: number
 
 ## Typescript return type from array
 
+**Date:** July 3, 2025
+
 This is util for when you want to extract some props from an Object using an Array of strings for some of those properties that the object has.
 
 ```typescript
